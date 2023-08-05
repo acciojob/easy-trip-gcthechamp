@@ -87,22 +87,25 @@ public class AirportRepository {
     }
 
     public int calculateFlightFare(Integer flightId) {
-        int numOfPeopleBookedAlready = flightPassengers.get(flightId).size();
+        List<Passenger> passengerList = flightPassengers.getOrDefault(flightId,new ArrayList<>());
+        int numOfPeopleBookedAlready = passengerList.size();
         int flightFare = 3000 + numOfPeopleBookedAlready*50;
         return flightFare;
     }
 
     public String bookATicket(Integer flightId, Integer passengerId) {
-        int numOfPeopleBookedAlready = flightPassengers.get(flightId).size();
+        List<Passenger> passengerList = flightPassengers.getOrDefault(flightId,new ArrayList<>());
+        int numOfPeopleBookedAlready = passengerList.size();
         if(numOfPeopleBookedAlready > flightDb.get(flightId).getMaxCapacity())
             return "FAILURE";
 
-        List<Flight> flightList = flightsBooked.get(passengerId);
+        List<Flight> flightList = flightsBooked.getOrDefault(passengerId, new ArrayList<>());
 
-        for(Flight flight : flightList)
-        {
-            if(flight.getFlightId() == flightId)
-                return "FAILURE";
+        if(flightList.size() > 0) {
+            for (Flight flight : flightList) {
+                if (flight.getFlightId() == flightId)
+                    return "FAILURE";
+            }
         }
 
 
