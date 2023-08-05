@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class AirportService {
 
-
-    AirportRepository robj = new AirportRepository();
+    @Autowired
+    AirportRepository robj;
 
     public void addAirport(Airport airport) {
         robj.addAirport(airport);
